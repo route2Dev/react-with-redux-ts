@@ -1,4 +1,4 @@
-import { ICourse } from './course';
+import { ICourse } from '../../store/course';
 
 export default function courseReducer(state = new Array<ICourse>(), action: any) {
     switch (action.type) {

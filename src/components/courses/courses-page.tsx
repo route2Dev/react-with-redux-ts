@@ -1,9 +1,17 @@
 import React from 'react';
-import { ComponentBase } from '../component-base';
-import { ICourse } from './course';
+import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
+import { IApplicationState } from '../../store';
+import { ICourse } from '../../store/course';
+import * as CourseStore from '../../store/course';
 
-export class CoursesPage extends ComponentBase<ICourse> {
-  constructor(props: Readonly<{}>) {
+type CourseProps = 
+  IApplicationState
+  & typeof CourseStore.actions
+  // & RouteComponentProps<{}>;  
+
+export class CoursesPage extends React.Component<CourseProps, CourseStore.ICourseState> {
+  constructor(props: any) {
     super(props);
 
     this.state = {
@@ -20,7 +28,7 @@ export class CoursesPage extends ComponentBase<ICourse> {
 
   handleSubmit = (event: any) => {
     event.preventDefault();
-    alert(this.state.course.title);
+    this.props.createCourse(this.state.course);
   }
 
   render() {
@@ -34,9 +42,29 @@ export class CoursesPage extends ComponentBase<ICourse> {
           value={this.state.course.title}
         />
         <input type="submit" value="Save" />
+        {this.props.courses.map((course: ICourse) => 
+          (<div key={course.title}>{course.title}</div>
+        ))}
       </form>
     );
   }
 }
 
-export default CoursesPage;
+const mapStateToProps = (state: IApplicationState) => ({
+  courses: state.courses
+});
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    createCourse: (course: ICourse) => {
+      dispatch(CourseStore.actions.createCourse(course));
+    }
+  }
+};
+
+const coursesContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CoursesPage);
+
+export default coursesContainer;

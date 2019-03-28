@@ -40,6 +40,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@types/react-redux": "^7.0.5",
     "@types/react-router-dom": "^4.3.1",
     "@types/redux-immutable-state-invariant": "^2.1.0",
     "npm-watch": "^0.6.0",
