@@ -1,65 +1,92 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
-import { IApplicationState } from '../../store';
-import { ICourse } from '../../store/course';
-import * as CourseStore from '../../store/course';
+import { IApplicationState, IAuthor } from '../../store';
+import { ICourse } from '../../store/.';
+import * as AuthorActions from '../../store/author-actions';
+import * as CourseActions from '../../store/course-actions';
+import CourseList from './course-list';
 
-type CourseProps = 
-  IApplicationState
-  & typeof CourseStore.actions
-  // & RouteComponentProps<{}>;  
+interface ICoursesProps {
+  authors: Array<IAuthor>;
+  courses: Array<ICourse>;
+  loadAuthors: () => void;
+  loadCourses: () => void;
+  createCourse: (course: ICourse) => void;
+}
 
-export class CoursesPage extends React.Component<CourseProps, CourseStore.ICourseState> {
-  constructor(props: any) {
+interface ICourseState {
+  course: ICourse
+}
+
+export class CoursesPage extends React.Component<ICoursesProps, ICourseState> {
+
+  constructor(props: ICoursesProps) {
     super(props);
 
     this.state = {
       course: {
-        title: ''
+        id: undefined,
+        title: '',
+        slug: '',
+        category: '',
+        authorId: 0,
+        authorName: undefined
       }
     };
   }
 
-  handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const course = { ...this.state.course, title: event.currentTarget.value };
-    this.setState({ course });
-  }
+  componentDidMount(): void {
+    if (this.props.courses.length === 0) {
+      this.props.loadCourses();      
+    }
 
-  handleSubmit = (event: any) => {
-    event.preventDefault();
-    this.props.createCourse(this.state.course);
+    if (this.props.authors.length === 0) {
+      this.props.loadAuthors();
+    }
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <>
         <h2>Courses</h2>
-        <h3>Add Course</h3>
-        <input
-          type="text"
-          onChange={this.handleChange}
-          value={this.state.course.title}
-        />
-        <input type="submit" value="Save" />
-        {this.props.courses.map((course: ICourse) => 
-          (<div key={course.title}>{course.title}</div>
-        ))}
-      </form>
+        <CourseList courses={this.props.courses} />
+      </>
     );
   }
 }
 
-const mapStateToProps = (state: IApplicationState) => ({
-  courses: state.courses
-});
+const getAuthorName = (authorId: number, state: IApplicationState): string => {
+  const author = state.authors.find(a => a.id === authorId);
+  return author
+    ? author.name
+    : ''; 
+};
+
+const mapStateToProps = (state: IApplicationState) => {
+  return {
+    courses: state.authors.length === 0
+      ? []
+      : state.courses.map(course => {
+      return {
+        ...course,
+        authorName: getAuthorName(course.authorId, state)
+      }
+    }),
+    authors: state.authors}
+};
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    createCourse: (course: ICourse) => {
-      dispatch(CourseStore.actions.createCourse(course));
-    }
-  }
+      createCourse: (course: ICourse) => {
+        dispatch(CourseActions.actions.createCourse(course))
+      },
+      loadCourses: () => {
+        dispatch(CourseActions.actions.loadCourses())
+      },
+      loadAuthors: () => {
+        dispatch(AuthorActions.actions.loadAuthors())
+      }
+    }  
 };
 
 const coursesContainer = connect(
