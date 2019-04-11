@@ -4,9 +4,10 @@ import { ICourse } from '../../store';
 
 interface ICourseListProps {
   courses: Array<ICourse>
+  onDeleteClick: (event: any) => void;
 }
 
-const CourseList = ({ courses }: ICourseListProps) => {
+const CourseList = ({ courses, onDeleteClick }: ICourseListProps) => {
   return (<table className="table">
     <thead>
       <tr>
@@ -14,6 +15,7 @@ const CourseList = ({ courses }: ICourseListProps) => {
         <th>Title</th>
         <th>Author</th>
         <th>Category</th>
+        <th />
       </tr>
     </thead>
     <tbody>
@@ -29,6 +31,15 @@ const CourseList = ({ courses }: ICourseListProps) => {
           </td>
           <td>{course.authorName}</td>
           <td>{course.category}</td>
+          <td>
+            <button
+              className="btn btn-outline-danger"
+              // tslint:disable-next-line: jsx-no-lambda
+              onClick={() => onDeleteClick(course)}
+            >
+                Delete
+            </button>
+          </td>
         </tr>);
       })}
     </tbody>

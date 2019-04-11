@@ -1,4 +1,11 @@
+import '@babel/polyfill'
+import 'react-app-polyfill/ie11';
+// tslint:disable-next-line: ordered-imports
+// import 'raf/polyfill';
+// tslint:disable-next-line: ordered-imports
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'core-js/es6/string';
+import 'core-js/fn/array/includes';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider as ReduxProvider } from 'react-redux';

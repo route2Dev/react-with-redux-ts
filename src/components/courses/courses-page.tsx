@@ -1,21 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
+import { toast } from 'react-toastify';
 import { IApplicationState, IAuthor } from '../../store';
 import { ICourse } from '../../store/.';
-import * as AuthorActions from '../../store/author-actions';
-import * as CourseActions from '../../store/course-actions';
+import { loadAuthors } from '../../store/author-actions';
+import { deleteCourse, loadCourses } from '../../store/course-actions';
+import Spinner from '../common/spinner';
 import CourseList from './course-list';
 
 interface ICoursesProps {
   authors: Array<IAuthor>;
   courses: Array<ICourse>;
-  loadAuthors: () => void;
-  loadCourses: () => void;
-  createCourse: (course: ICourse) => void;
+  loadAuthors: () => Promise<void>;
+  loadCourses: () => Promise<void>;
+  deleteCourse: (course: ICourse) => Promise<any>;
+  loading: boolean;
 }
 
 interface ICourseState {
-  course: ICourse
+  redirectToAddCoursePage: boolean;
 }
 
 export class CoursesPage extends React.Component<ICoursesProps, ICourseState> {
@@ -24,20 +28,13 @@ export class CoursesPage extends React.Component<ICoursesProps, ICourseState> {
     super(props);
 
     this.state = {
-      course: {
-        id: undefined,
-        title: '',
-        slug: '',
-        category: '',
-        authorId: 0,
-        authorName: undefined
-      }
+      redirectToAddCoursePage: false
     };
   }
 
   componentDidMount(): void {
     if (this.props.courses.length === 0) {
-      this.props.loadCourses();      
+      this.props.loadCourses();
     }
 
     if (this.props.authors.length === 0) {
@@ -45,11 +42,33 @@ export class CoursesPage extends React.Component<ICoursesProps, ICourseState> {
     }
   }
 
+  handleDeleteCourse = (course: ICourse) => {
+    toast.success('Course deleted');
+    this.props.deleteCourse(course).catch(error => {
+      toast.error('Delete failded. ' + error.message, {autoClose: false});
+    });
+  }
+
+
   render() {
     return (
       <>
+        {this.state.redirectToAddCoursePage && <Redirect to="/course" />}
         <h2>Courses</h2>
-        <CourseList courses={this.props.courses} />
+        {this.props.loading
+        ? <Spinner /> : (
+        <>
+          <button
+            style={{ marginBottom: 20 }}
+            className="btn btn-primary add-course"
+            // tslint:disable-next-line: jsx-no-lambda
+            onClick={() => this.setState({ redirectToAddCoursePage: true })}
+          >
+            Add Course
+          </button>
+          <CourseList onDeleteClick={this.handleDeleteCourse} courses={this.props.courses} />
+        </>
+        )}
       </>
     );
   }
@@ -59,7 +78,7 @@ const getAuthorName = (authorId: number, state: IApplicationState): string => {
   const author = state.authors.find(a => a.id === authorId);
   return author
     ? author.name
-    : ''; 
+    : '';
 };
 
 const mapStateToProps = (state: IApplicationState) => {
@@ -67,26 +86,34 @@ const mapStateToProps = (state: IApplicationState) => {
     courses: state.authors.length === 0
       ? []
       : state.courses.map(course => {
-      return {
-        ...course,
-        authorName: getAuthorName(course.authorId, state)
-      }
-    }),
-    authors: state.authors}
+        return {
+          ...course,
+          authorName: getAuthorName(course.authorId as number, state)
+        }
+      }),
+    authors: state.authors,
+    loading: state.apiCallsInProgress > 0
+  };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-      createCourse: (course: ICourse) => {
-        dispatch(CourseActions.actions.createCourse(course))
-      },
-      loadCourses: () => {
-        dispatch(CourseActions.actions.loadCourses())
-      },
-      loadAuthors: () => {
-        dispatch(AuthorActions.actions.loadAuthors())
-      }
-    }  
+// const mapDispatchToProps = (dispatch: any) => {
+//   return {
+//     loadCourses: () => {
+//       dispatch(loadCourses())
+//     },
+//     loadAuthors: () => {
+//       dispatch(loadAuthors())
+//     },
+//     deleteCourse: (course: ICourse) => {
+//       dispatch(deleteCourse(course))
+//     }
+//   }
+// };
+
+const mapDispatchToProps = {
+  loadCourses,
+  loadAuthors,
+  deleteCourse
 };
 
 const coursesContainer = connect(

@@ -1,9 +1,9 @@
 
 export interface ICourse {
-    id?: number;
+    id?: string;
     title: string;
-    slug: string;
-    authorId: number;
+    slug?: string;
+    authorId: number | null;
     category: string;
     authorName?: string;
 }
@@ -14,6 +14,8 @@ export interface IAuthor {
 }
 
 export interface IApplicationState {
+    course: ICourse;
     courses: Array<ICourse>;
     authors: Array<IAuthor>;
+    apiCallsInProgress: number; 
 }
