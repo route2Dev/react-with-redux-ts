@@ -1,4 +1,5 @@
 import React from 'react';
+import LoadingOverlay from 'react-loading-overlay';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { toast } from 'react-toastify';
@@ -55,7 +56,24 @@ export class CoursesPage extends React.Component<ICoursesProps, ICourseState> {
       <>
         {this.state.redirectToAddCoursePage && <Redirect to="/course" />}
         <h2>Courses</h2>
-        {this.props.loading
+        <LoadingOverlay
+          active={this.props.loading}
+          spinner={<Spinner />}
+          text="Loading Courses..."
+        >
+          <>
+            <button
+              style={{ marginBottom: 20 }}
+              className="btn btn-primary add-course"
+              // tslint:disable-next-line: jsx-no-lambda
+              onClick={() => this.setState({ redirectToAddCoursePage: true })}
+            >
+              Add Course
+            </button>
+            <CourseList onDeleteClick={this.handleDeleteCourse} courses={this.props.courses} />
+          </>        
+        </LoadingOverlay>
+        {/* {this.props.loading
         ? <Spinner /> : (
         <>
           <button
@@ -68,7 +86,7 @@ export class CoursesPage extends React.Component<ICoursesProps, ICourseState> {
           </button>
           <CourseList onDeleteClick={this.handleDeleteCourse} courses={this.props.courses} />
         </>
-        )}
+        )} */}
       </>
     );
   }
