@@ -34,7 +34,6 @@ const CourseList = ({ courses, onDeleteClick }: ICourseListProps) => {
           <td>
             <button
               className="btn btn-outline-danger"
-              // tslint:disable-next-line: jsx-no-lambda
               onClick={() => onDeleteClick(course)}
             >
                 Delete

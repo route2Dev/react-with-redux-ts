@@ -16,6 +16,7 @@
       "member-access": false,
       "no-submodule-imports": false,
       "trailing-comma": false,
-      "jsx-no-multiline-js": false
+      "jsx-no-multiline-js": false,
+      "jsx-no-lambda": false
     }
   }

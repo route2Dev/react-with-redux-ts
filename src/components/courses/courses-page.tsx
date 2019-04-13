@@ -65,7 +65,6 @@ export class CoursesPage extends React.Component<ICoursesProps, ICourseState> {
             <button
               style={{ marginBottom: 20 }}
               className="btn btn-primary add-course"
-              // tslint:disable-next-line: jsx-no-lambda
               onClick={() => this.setState({ redirectToAddCoursePage: true })}
             >
               Add Course
@@ -79,7 +78,6 @@ export class CoursesPage extends React.Component<ICoursesProps, ICourseState> {
           <button
             style={{ marginBottom: 20 }}
             className="btn btn-primary add-course"
-            // tslint:disable-next-line: jsx-no-lambda
             onClick={() => this.setState({ redirectToAddCoursePage: true })}
           >
             Add Course
