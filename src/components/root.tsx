@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from '../App';
 import messages_de from '../translations/de.json'
 import messages_en from '../translations/en.json';
+import SelectInput from './common/SelectInput';
 
 addLocaleData([...locale_de]);
 
@@ -29,6 +30,13 @@ class Root extends Component<{}, RootState> {
         this.state = {
             locale: 'en'
         };
+
+        const x = Object.keys(this.locales).map((key) => {
+            return {value:  key,
+                text: this.locales[key]};
+        });
+
+        console.log('Object.Keys mapping to variable', x);
     }
 
     onChange = (event: any) => {
@@ -48,11 +56,26 @@ class Root extends Component<{}, RootState> {
                 <p className="App-intro">
                     To change the language of the application, select one of the supported languaged in this dropdown
                 </p>
-                <select onChange={this.onChange}>
+                <select onChange={this.onChange} value={this.state.locale}>
                     {Object.keys(this.locales).map((key) => {
                     return <option value={key} key={key}>{this.locales[key]}</option>
                     })}
                 </select>
+                <br />
+                <div className="row">
+                    <div className="col-md-12" style={{marginTop: '20px'}}>
+                        <SelectInput 
+                            name="localeId"
+                            label="Locale"
+                            value={this.state.locale}
+                            options={Object.keys(this.locales).map((key) => {
+                                return {value:  key,
+                                    text: this.locales[key]};
+                            })}
+                            onChange={this.onChange}
+                        />
+                    </div>
+                </div>
             </div>
          </>
     )};
