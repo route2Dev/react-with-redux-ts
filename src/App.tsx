@@ -11,7 +11,10 @@ import HomePage from './components/home/home-page';
 import PageNotFound from './components/page-not-found';
 
 
+interface Props {locale: string}
+
 class App extends Component {
+
   componentDidMount() {    
     console.log('Site variable: ', window.site);
   }
@@ -19,7 +22,7 @@ class App extends Component {
   render() {
     return (
       <div className="container-fluid">
-        <Header />
+        <Header />        
         <Switch>
           <Route exact={true} path="/" component={HomePage} />
           <Route path="/about" component={AboutPage} />
@@ -27,8 +30,8 @@ class App extends Component {
           <Route path="/course/:slug" component={ManageCoursePage} />
           <Route path="/course" component={ManageCoursePage} />
           <Route component={PageNotFound} />
-        </Switch>
-        <ToastContainer autoClose={3000} hideProgressBar={true} />
+        </Switch>       
+        <ToastContainer autoClose={3000} hideProgressBar={true} />        
       </div>
     );
   }
