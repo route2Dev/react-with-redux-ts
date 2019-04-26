@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import AboutPage from './components/about/about-page';
-import { Header } from './components/common/header';
+import Header from './components/common/header';
 import CoursesPage from './components/courses/courses-page';
 import ManageCoursePage from './components/courses/manage-course-page';
 import HomePage from './components/home/home-page';
