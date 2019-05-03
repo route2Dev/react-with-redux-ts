@@ -1,4 +1,4 @@
-const courses = [
+export const courses = [
   {
     id: 1,
     title: "Securing React Apps with Auth0",
@@ -71,7 +71,7 @@ const courses = [
   }
 ];
 
-const authors = [
+export const authors = [
   { id: 1, name: "Cory House" },
   { id: 2, name: "Scott Allen" },
   { id: 3, name: "Dan Wahlin" }

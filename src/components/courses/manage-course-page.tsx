@@ -1,5 +1,5 @@
 import { History } from 'history';
-import React, { Component } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { IApplicationState, IAuthor, ICourse } from '../../store';
@@ -15,7 +15,7 @@ const newCourse: ICourse = {
 };
 
 interface IManageCourseProps {
-    course: ICourse;
+    selectedCourse: ICourse;
     authors: Array<IAuthor>;
     courses: Array<ICourse>;
     loadAuthors: () => Promise<void>;
@@ -30,45 +30,44 @@ interface IManageCourseState {
     saving: boolean;
 }
 
-export class ManageCoursePage extends Component<IManageCourseProps, IManageCourseState> {
+export const ManageCoursePage = ({ 
+    selectedCourse,
+    authors,
+    courses,
+    loadAuthors,
+    loadCourses,
+    saveCourse,
+    history,    
+}: IManageCourseProps) => {
 
-    constructor(props: IManageCourseProps) {
-        super(props);
+    const [course, setCourse] = useState({ ...selectedCourse });
+    const [errors, setErrors] = useState({});
+    const [saving, setSaving] = useState(false);
 
-        this.state = {
-            course: props.course,
-            errors: new CourseFormErrors(),
-            saving: false
-        };
-    }
-
-    componentDidMount(): void {
-        if (this.props.courses.length === 0) {
-            this.props.loadCourses();
+    useEffect(() => {
+        if (courses.length === 0) {
+            loadCourses();
+        } else {
+            setCourse({ ...selectedCourse });
         }
 
-        if (this.props.authors.length === 0) {
-            this.props.loadAuthors();
-        }
-    }
+        if (authors.length === 0) {
+            loadAuthors();
+        }        
+    }, [selectedCourse]);
 
-    componentDidUpdate(prevProps: IManageCourseProps): void {
-        const course = this.props.course;
-        if (prevProps.course !== course && course !== this.state.course) {
-            this.setState({ course });            
-        }
-    }
-
-    handleChange = (event: any) => {
+    // class field - ES7 Arrow function enhancement.
+    const handleChange = (event: any) => {
         const { name, value } = event.target;
 
-        const course = { ...this.state.course, [name]: name === 'authorId' ? parseInt(value, 10) : value }
-        this.setState({ course });
-        console.log('after state:', this.state);
+        setCourse(prevCourse => ({
+            ...prevCourse,
+            [name]: name === 'authorId' ? parseInt(value, 10) : value
+        }))
     }
 
-    formIsValid = (): boolean => {
-        const {title, authorId, category} = this.state.course;
+    const formIsValid = (): boolean => {
+        const {title, authorId, category} = course;
         const errors: CourseFormErrors = {};
 
         if (!title) {
@@ -83,42 +82,42 @@ export class ManageCoursePage extends Component<IManageCourseProps, IManageCours
             errors.category = 'Category is required.';
         }
 
-        this.setState({errors});
+        setErrors(errors);
 
         return Object.keys(errors).length === 0;
     } 
 
-    handleSave = (event: React.ChangeEvent<HTMLFormElement>) => {
+    const handleSave = (event: React.ChangeEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (!this.formIsValid()) {
+        if (!formIsValid()) {
             return;
         }
-        this.setState({saving: true});
-        this.props.saveCourse(this.state.course)
+
+        setSaving(true);
+
+        saveCourse(course)
             .then(() => {
                 toast.success('Course saved.');
-                this.props.history.push('/courses');
+                history.push('/courses');
             })
             .catch(error => {
-                this.setState({saving: false, errors:{ onSave: error.message}});                               
+                setSaving(false);
+                setErrors({ onSave: error.message});
             });
-
     }
 
-    render() {
-        return this.props.authors.length === 0 || this.props.courses.length == 0
-            ? (<Spinner />)
-            : (
-                <CourseForm
-                    course={this.state.course}
-                    authors={this.props.authors}
-                    errors={this.state.errors}
-                    onChange={this.handleChange}
-                    onSave={this.handleSave}
-                    saving={this.state.saving}
-                />
-            )
-    }
+    return authors.length === 0 || courses.length == 0
+        ? (<Spinner />)
+        : (
+            <CourseForm
+                course={course}
+                authors={authors}
+                errors={errors}
+                onChange={handleChange}
+                onSave={handleSave}
+                saving={saving}
+            />
+        )
 }
 
 export const getCourseBySlug = (courses: Array<ICourse>, slug: string) => {
@@ -127,12 +126,12 @@ export const getCourseBySlug = (courses: Array<ICourse>, slug: string) => {
 
 const mapStateToProps = (state: IApplicationState, ownProps: any) => {
     const slug = ownProps.match.params.slug;
-    const course = slug && state.courses.length > 0
+    const selectedCourse = slug && state.courses.length > 0
         ? getCourseBySlug(state.courses, slug)
         : newCourse;
 
     return {
-        course,
+        selectedCourse,
         courses: state.courses,
         authors: state.authors
     };
