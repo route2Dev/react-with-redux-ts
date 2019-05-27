@@ -11,6 +11,7 @@ interface ISelectInputProps {
   onChange?: (event: React.ChangeEvent<HTMLElement>) => void;
   defaultOption?: string;
   value?: string | number;
+  required?: boolean;
   error?: string;
   options: Array<IOption>
 }
@@ -21,17 +22,24 @@ const SelectInput = ({
   onChange,
   defaultOption,
   value,
+  required,
   error,
   options
 }: ISelectInputProps) => {
+  let wrapperClass = 'form-group';
+  if (error && error.length > 0) {
+    wrapperClass += ' ' + 'has-error';
+  }
+  
   return (
-    <div className="form-group">
+    <div className={wrapperClass}>
       <label htmlFor={name}>{label}</label>
-      <div className="field">
+      <div className="field input-group">
         {/* Note, value is set here rather than on the option - docs: https://facebook.github.io/react/docs/forms.html */}
         <select
           name={name}
           value={value}
+          
           onChange={onChange}
           className="form-control"
         >
@@ -44,8 +52,13 @@ const SelectInput = ({
             );
           })}
         </select>
-        {error && <div className="alert alert-danger">{error}</div>}
+        {required &&
+          <div className="input-group-append">
+            <span className="input-group-text">*</span>
+          </div>
+        }
       </div>
+      {error && <div className="alert alert-danger">{error}</div>}
     </div>
   );
 };

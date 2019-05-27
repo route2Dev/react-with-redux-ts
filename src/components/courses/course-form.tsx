@@ -23,6 +23,7 @@ const CourseForm = ({
         name="title"
         label="Title"
         value={course.title}
+        required={true}
         onChange={onChange}
         error={errors.title}
       />
@@ -31,19 +32,21 @@ const CourseForm = ({
         name="authorId"
         label="Author"
         value={course.authorId || ''}
+        required={true}
         defaultOption="Select Author"
         options={authors.map(author => ({
           value: author.id,
           text: author.name
         }))}
         onChange={onChange}
-        error={errors.author}
+        error={errors.authorId}
       />
 
       <TextInput
         name="category"
         label="Category"
         value={course.category}
+        required={true}
         onChange={onChange}
         error={errors.category}
       />
@@ -58,7 +61,7 @@ const CourseForm = ({
 export class CourseFormErrors {
   onSave? = '';
   title? = '';
-  author? = '';
+  authorId? = '';
   category? = '';
 }
 

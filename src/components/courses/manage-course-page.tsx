@@ -1,10 +1,12 @@
 import { History } from 'history';
-import React, { Component, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { IApplicationState, IAuthor, ICourse } from '../../store';
 import { loadAuthors } from '../../store/author-actions';
 import { loadCourses, saveCourse } from '../../store/course-actions';
+import { FieldValidation, validate } from '../../validation/validation';
+import * as Validators from '../../validation/validators';
 import Spinner from '../common/spinner';
 import CourseForm, { CourseFormErrors } from './course-form';
 
@@ -41,8 +43,14 @@ export const ManageCoursePage = ({
 }: IManageCourseProps) => {
 
     const [course, setCourse] = useState({ ...selectedCourse });
-    const [errors, setErrors] = useState({});
+    const [errorsState, setErrors] = useState({});
     const [saving, setSaving] = useState(false);
+
+    const validators = [
+        new FieldValidation('title', 'Title', [Validators.required, Validators.minLength(6)]),
+        new FieldValidation('authorId', 'Author', [Validators.required]),
+        new FieldValidation('category', 'Category', [Validators.required])
+    ];
 
     useEffect(() => {
         if (courses.length === 0) {
@@ -67,20 +75,7 @@ export const ManageCoursePage = ({
     }
 
     const formIsValid = (): boolean => {
-        const {title, authorId, category} = course;
-        const errors: CourseFormErrors = {};
-
-        if (!title) {
-            errors.title = 'Title is required.';            
-        }
-
-        if (!authorId) {
-            errors.author = 'Author is required.';            
-        }
-
-        if (!category) {
-            errors.category = 'Category is required.';
-        }
+        const errors = validate(course, validators);   
 
         setErrors(errors);
 
@@ -112,7 +107,7 @@ export const ManageCoursePage = ({
             <CourseForm
                 course={course}
                 authors={authors}
-                errors={errors}
+                errors={errorsState}
                 onChange={handleChange}
                 onSave={handleSave}
                 saving={saving}
