@@ -62,6 +62,7 @@ export const ManageCoursePage = ({
         if (authors.length === 0) {
             loadAuthors();
         }        
+    // eslint-disable-next-line
     }, [selectedCourse]);
 
     // class field - ES7 Arrow function enhancement.
@@ -101,7 +102,7 @@ export const ManageCoursePage = ({
             });
     }
 
-    return authors.length === 0 || courses.length == 0
+    return authors.length === 0 || courses.length === 0
         ? (<Spinner />)
         : (
             <CourseForm

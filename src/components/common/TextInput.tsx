@@ -13,7 +13,7 @@ interface ITextInputProps {
 const TextInput = ({ name, label, onChange, placeholder, value, required, error }: ITextInputProps) => {
   let wrapperClass = 'form-group';
   if (error && error.length > 0) {
-    wrapperClass += ' ' + 'has-error';
+    wrapperClass += ' has-error';
   }
 
   return (

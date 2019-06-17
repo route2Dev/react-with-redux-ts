@@ -40,7 +40,7 @@ class Root extends Component<{}, RootState> {
     }
 
     onChange = (event: any) => {
-        const { name, value } = event.target;
+        const { value } = event.target;
         this.setState({locale: value});
     }
 

@@ -28,7 +28,7 @@ const SelectInput = ({
 }: ISelectInputProps) => {
   let wrapperClass = 'form-group';
   if (error && error.length > 0) {
-    wrapperClass += ' ' + 'has-error';
+    wrapperClass += ' has-error';
   }
   
   return (
