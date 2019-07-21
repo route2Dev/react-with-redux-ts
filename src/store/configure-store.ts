@@ -6,12 +6,11 @@ import { IApplicationState } from '.';
 import rootReducer from './root-reducer';
 
 export default function configureStore(initialState?: IApplicationState) {
+  // see https://github.com/zalmoxisus/redux-devtools-extension
 
-    // see https://github.com/zalmoxisus/redux-devtools-extension
-
-    return createStore(
-        rootReducer,
-        initialState,
-        composeWithDevTools(applyMiddleware(thunk, reduxImmutableStateInvariant()))
-    );
+  return createStore(
+    rootReducer,
+    initialState,
+    composeWithDevTools(applyMiddleware(thunk, reduxImmutableStateInvariant()))
+  );
 }

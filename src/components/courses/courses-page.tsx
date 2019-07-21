@@ -3,7 +3,7 @@ import LoadingOverlay from 'react-loading-overlay';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { toast } from 'react-toastify';
-import { IApplicationState, IAuthor } from '../../store';
+import { IAuthor, IApplicationState } from '../../store';
 import { ICourse } from '../../store/.';
 import { loadAuthors } from '../../store/author-actions';
 import { deleteCourse, loadCourses } from '../../store/course-actions';
@@ -24,7 +24,6 @@ interface ICourseState {
 }
 
 export class CoursesPage extends React.Component<ICoursesProps, ICourseState> {
-
   constructor(props: ICoursesProps) {
     super(props);
 
@@ -46,10 +45,9 @@ export class CoursesPage extends React.Component<ICoursesProps, ICourseState> {
   handleDeleteCourse = (course: ICourse) => {
     toast.success('Course deleted');
     this.props.deleteCourse(course).catch(error => {
-      toast.error('Delete failded. ' + error.message, {autoClose: false});
+      toast.error('Delete failded. ' + error.message, { autoClose: false });
     });
-  }
-
+  };
 
   render() {
     return (
@@ -69,8 +67,11 @@ export class CoursesPage extends React.Component<ICoursesProps, ICourseState> {
             >
               Add Course
             </button>
-            <CourseList onDeleteClick={this.handleDeleteCourse} courses={this.props.courses} />
-          </>        
+            <CourseList
+              onDeleteClick={this.handleDeleteCourse}
+              courses={this.props.courses}
+            />
+          </>
         </LoadingOverlay>
         {/* {this.props.loading
         ? <Spinner /> : (
@@ -92,21 +93,20 @@ export class CoursesPage extends React.Component<ICoursesProps, ICourseState> {
 
 const getAuthorName = (authorId: number, state: IApplicationState): string => {
   const author = state.authors.find(a => a.id === authorId);
-  return author
-    ? author.name
-    : '';
+  return author ? author.name : '';
 };
 
 const mapStateToProps = (state: IApplicationState) => {
   return {
-    courses: state.authors.length === 0
-      ? []
-      : state.courses.map(course => {
-        return {
-          ...course,
-          authorName: getAuthorName(course.authorId as number, state)
-        }
-      }),
+    courses:
+      state.authors.length === 0
+        ? []
+        : state.courses.map(course => {
+            return {
+              ...course,
+              authorName: getAuthorName(course.authorId as number, state)
+            };
+          }),
     authors: state.authors,
     loading: state.apiCallsInProgress > 0
   };

@@ -13,7 +13,7 @@ interface ISelectInputProps {
   value?: string | number;
   required?: boolean;
   error?: string;
-  options: Array<IOption>
+  options: Array<IOption>;
 }
 
 const SelectInput = ({
@@ -30,7 +30,7 @@ const SelectInput = ({
   if (error && error.length > 0) {
     wrapperClass += ' has-error';
   }
-  
+
   return (
     <div className={wrapperClass}>
       <label htmlFor={name}>{label}</label>
@@ -39,7 +39,6 @@ const SelectInput = ({
         <select
           name={name}
           value={value}
-          
           onChange={onChange}
           className="form-control"
         >
@@ -52,11 +51,11 @@ const SelectInput = ({
             );
           })}
         </select>
-        {required &&
+        {required && (
           <div className="input-group-append">
             <span className="input-group-text">*</span>
           </div>
-        }
+        )}
       </div>
       {error && <div className="alert alert-danger">{error}</div>}
     </div>

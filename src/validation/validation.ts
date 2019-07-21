@@ -3,11 +3,14 @@ export class FieldValidation {
    * Instantiates a FieldValidation Object
    * @param name name of the field to validate
    * @param label text used in the validation message (usually the field label)
-   * @param validations array of validations to perform against the field 
+   * @param validations array of validations to perform against the field
    */
-  constructor(public name: string, public label: string, public validations: any[]) { }
+  constructor(
+    public name: string,
+    public label: string,
+    public validations: any[]
+  ) {}
 }
-
 
 // export const validationRunner = (name: string, label: string, ...rules: any[]) => {
 const validationThunk = (fieldValidation: FieldValidation) => {
@@ -24,7 +27,7 @@ const validationThunk = (fieldValidation: FieldValidation) => {
 };
 
 /**
- * 
+ *
  * @param state object to validate
  * @param validations array of validations to be performed
  * @returns errors object containing any validation messages

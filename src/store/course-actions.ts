@@ -10,58 +10,63 @@ export const UPDATE_COURSE_SUCCESS = 'UPDATE_COURSE_SUCCESS';
 export const DELETE_COURSES_OPTIMISTIC = 'DELETE_COURSES_OPTIMISTIC';
 
 export const loadCoursesSuccess = (courses: Array<ICourse>) => ({
-    type: LOAD_COURSES_SUCCESS, courses
+  type: LOAD_COURSES_SUCCESS,
+  courses
 });
 
 export const createCoursesSucess = (course: ICourse) => ({
-    type: CREATE_COURSE_SUCCESS, course
+  type: CREATE_COURSE_SUCCESS,
+  course
 });
 
 export const updateCoursesSucess = (course: ICourse) => ({
-    type: UPDATE_COURSE_SUCCESS, course
+  type: UPDATE_COURSE_SUCCESS,
+  course
 });
 
 export const deleteCourseOptimistic = (course: ICourse) => ({
-    type: DELETE_COURSES_OPTIMISTIC, course
+  type: DELETE_COURSES_OPTIMISTIC,
+  course
 });
 
 // Thunks
 
 export const loadCourses = () => {
-    return (dispatch: any) => {
-        dispatch(beginApiCall())
-        return  courseApi.getCourses()
-            .then(courses => {
-                dispatch(loadCoursesSuccess(courses));
-            })
-            .catch(error => {
-                dispatch(apiCallError(error));
-                throw error;
-            });
-    };
+  return (dispatch: any) => {
+    dispatch(beginApiCall());
+    return courseApi
+      .getCourses()
+      .then(courses => {
+        dispatch(loadCoursesSuccess(courses));
+      })
+      .catch(error => {
+        dispatch(apiCallError(error));
+        throw error;
+      });
+  };
 };
 
 export const saveCourse = (course: ICourse) => {
-    return (dispatch: any) => {
-        dispatch(beginApiCall())
-        return  courseApi.saveCourse(course)
-            .then(savedCourse => {
-                course.id
-                    ? dispatch(updateCoursesSucess(savedCourse))
-                    : dispatch(createCoursesSucess(savedCourse));
-            })
-            .catch(error => {
-                dispatch(apiCallError(error));
-                throw error;
-            });
-    };
+  return (dispatch: any) => {
+    dispatch(beginApiCall());
+    return courseApi
+      .saveCourse(course)
+      .then(savedCourse => {
+        course.id
+          ? dispatch(updateCoursesSucess(savedCourse))
+          : dispatch(createCoursesSucess(savedCourse));
+      })
+      .catch(error => {
+        dispatch(apiCallError(error));
+        throw error;
+      });
+  };
 };
 
 export const deleteCourse = (course: ICourse) => {
-    return (dispatch: any) => {
-        dispatch(deleteCourseOptimistic(course));
-        // ! is the non-null assertion on the optional id field in the type definition
-        return courseApi.deleteCourse(course.id!);
-    };
-}
-
+  return (dispatch: any) => {
+    dispatch(deleteCourseOptimistic(course));
+    // ! is the non-null assertion on the optional id field in the type definition
+    return courseApi.deleteCourse(course.id!);
+  };
+};

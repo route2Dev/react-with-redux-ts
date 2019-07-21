@@ -5,9 +5,9 @@ import { reducer as authors } from './author-reducer';
 import { reducer as courses } from './course-reducer';
 
 const rootReducer = combineReducers({
-    courses,
-    authors,
-    apiCallsInProgress    
+  courses,
+  authors,
+  apiCallsInProgress
 });
 
 export default rootReducer;

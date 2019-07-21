@@ -5,7 +5,7 @@ import './header.css';
 export default class Header extends Component {
   render() {
     return (
-        <nav>
+      <nav>
         <NavLink to="/" activeClassName="active" exact={true}>
           Home
         </NavLink>

@@ -6,11 +6,19 @@ interface ITextInputProps {
   onChange?: (event: React.ChangeEvent<HTMLElement>) => void;
   placeholder?: string;
   value?: string;
-  required?: boolean
+  required?: boolean;
   error?: string;
 }
 
-const TextInput = ({ name, label, onChange, placeholder, value, required, error }: ITextInputProps) => {
+const TextInput = ({
+  name,
+  label,
+  onChange,
+  placeholder,
+  value,
+  required,
+  error
+}: ITextInputProps) => {
   let wrapperClass = 'form-group';
   if (error && error.length > 0) {
     wrapperClass += ' has-error';
@@ -28,11 +36,11 @@ const TextInput = ({ name, label, onChange, placeholder, value, required, error 
           value={value}
           onChange={onChange}
         />
-        {required &&
+        {required && (
           <div className="input-group-append">
             <span className="input-group-text">*</span>
           </div>
-        }
+        )}
       </div>
       {error && <div className="alert alert-danger">{error}</div>}
     </div>

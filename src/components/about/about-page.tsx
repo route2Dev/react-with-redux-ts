@@ -6,9 +6,9 @@ export class AboutPage extends Component {
       <div>
         <h2>About</h2>
         <p>
-          (From Microsoft: This app uses React, Redux, React Router, and many other helpful
-          libraries.)
-      </p>
+          (From Microsoft: This app uses React, Redux, React Router, and many
+          other helpful libraries.)
+        </p>
       </div>
     );
   }

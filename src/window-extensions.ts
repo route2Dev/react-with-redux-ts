@@ -1,6 +1,7 @@
 declare global {
   interface Window {
-      site: string;
+    site: string;
+    createPopover: (tag?: string) => void;
   }
 }
 

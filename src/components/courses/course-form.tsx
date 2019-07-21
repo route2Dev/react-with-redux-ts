@@ -1,5 +1,5 @@
-import React from 'react';
 import { IAuthor, ICourse } from '../../store';
+import React from 'react';
 import SelectInput from '../common/SelectInput';
 import TextInput from '../common/TextInput';
 
