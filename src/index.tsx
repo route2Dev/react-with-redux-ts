@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-// tslint:disable-next-line: ordered-imports
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import 'react-app-polyfill/ie11';

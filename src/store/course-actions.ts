@@ -9,7 +9,7 @@ export const UPDATE_COURSE_SUCCESS = 'UPDATE_COURSE_SUCCESS';
 // Optimistic Actions
 export const DELETE_COURSES_OPTIMISTIC = 'DELETE_COURSES_OPTIMISTIC';
 
-export const loadCoursesSuccess = (courses: Array<ICourse>) => ({
+export const loadCoursesSuccess = (courses: ICourse[]) => ({
   type: LOAD_COURSES_SUCCESS,
   courses
 });
@@ -66,7 +66,8 @@ export const saveCourse = (course: ICourse) => {
 export const deleteCourse = (course: ICourse) => {
   return (dispatch: any) => {
     dispatch(deleteCourseOptimistic(course));
-    // ! is the non-null assertion on the optional id field in the type definition
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return courseApi.deleteCourse(course.id!);
   };
 };

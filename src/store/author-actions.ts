@@ -4,7 +4,7 @@ import { apiCallError, beginApiCall } from './api-status-actions';
 
 export const LOAD_AUTHORS_SUCCESS = 'LOAD_AUTHORS_SUCCESS';
 
-export const loadAuthorsSuccess = (authors: Array<IAuthor>) => ({
+export const loadAuthorsSuccess = (authors: IAuthor[]) => ({
   type: LOAD_AUTHORS_SUCCESS,
   authors
 });

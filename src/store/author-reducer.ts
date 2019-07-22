@@ -3,13 +3,13 @@ import { LOAD_AUTHORS_SUCCESS } from './author-actions';
 
 interface LoadAuthorAction {
   type: 'LOAD_AUTHORS_SUCCESS';
-  authors: Array<IAuthor>;
+  authors: IAuthor[];
 }
 
 type KnownAction = LoadAuthorAction;
 
 // type Reducer<Array<IAuthor>, KnownAction>
-export const reducer = (state: Array<IAuthor> = [], action: KnownAction) => {
+export const reducer = (state: IAuthor[] = [], action: KnownAction) => {
   switch (action.type) {
     case LOAD_AUTHORS_SUCCESS:
       return action.authors;

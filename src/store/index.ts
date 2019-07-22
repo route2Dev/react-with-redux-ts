@@ -14,7 +14,7 @@ export interface IAuthor {
 
 export interface IApplicationState {
   course: ICourse;
-  courses: Array<ICourse>;
-  authors: Array<IAuthor>;
+  courses: ICourse[];
+  authors: IAuthor[];
   apiCallsInProgress: number;
 }

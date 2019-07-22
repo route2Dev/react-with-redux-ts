@@ -18,7 +18,7 @@ interface UpdateCourseAction {
 
 interface LoadCourseAction {
   type: 'LOAD_COURSES_SUCCESS';
-  courses: Array<ICourse>;
+  courses: ICourse[];
 }
 
 interface DeleteCourseAction {
@@ -33,7 +33,7 @@ type KnownAction =
   | DeleteCourseAction;
 
 // type Reducer<Array<ICourse>, KnownAction>
-export const reducer = (state: Array<ICourse> = [], action: KnownAction) => {
+export const reducer = (state: ICourse[] = [], action: KnownAction) => {
   switch (action.type) {
     case CREATE_COURSE_SUCCESS:
       return [...state, { ...action.course }];

@@ -13,7 +13,7 @@ interface ISelectInputProps {
   value?: string | number;
   required?: boolean;
   error?: string;
-  options: Array<IOption>;
+  options: IOption[];
 }
 
 const SelectInput = ({

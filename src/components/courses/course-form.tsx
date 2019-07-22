@@ -3,6 +3,22 @@ import React from 'react';
 import SelectInput from '../common/SelectInput';
 import TextInput from '../common/TextInput';
 
+export class CourseFormErrors {
+  onSave? = '';
+  title? = '';
+  authorId? = '';
+  category? = '';
+}
+
+interface ICourseFormProps {
+  authors: IAuthor[];
+  course: ICourse;
+  errors?: CourseFormErrors;
+  onSave?: (event: React.ChangeEvent<HTMLFormElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLElement>) => void;
+  saving?: boolean;
+}
+
 const CourseForm = ({
   course,
   authors,
@@ -57,21 +73,5 @@ const CourseForm = ({
     </form>
   );
 };
-
-export class CourseFormErrors {
-  onSave? = '';
-  title? = '';
-  authorId? = '';
-  category? = '';
-}
-
-interface ICourseFormProps {
-  authors: Array<IAuthor>;
-  course: ICourse;
-  errors?: CourseFormErrors;
-  onSave?: (event: React.ChangeEvent<HTMLFormElement>) => void;
-  onChange?: (event: React.ChangeEvent<HTMLElement>) => void;
-  saving?: boolean;
-}
 
 export default CourseForm;

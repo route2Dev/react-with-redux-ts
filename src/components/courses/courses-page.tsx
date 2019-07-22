@@ -11,8 +11,8 @@ import Spinner from '../common/spinner';
 import CourseList from './course-list';
 
 interface ICoursesProps {
-  authors: Array<IAuthor>;
-  courses: Array<ICourse>;
+  authors: IAuthor[];
+  courses: ICourse[];
   loadAuthors: () => Promise<void>;
   loadCourses: () => Promise<void>;
   deleteCourse: (course: ICourse) => Promise<any>;

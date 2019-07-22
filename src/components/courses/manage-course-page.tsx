@@ -18,8 +18,8 @@ const newCourse: ICourse = {
 
 interface IManageCourseProps {
   selectedCourse: ICourse;
-  authors: Array<IAuthor>;
-  courses: Array<ICourse>;
+  authors: IAuthor[];
+  courses: ICourse[];
   loadAuthors: () => Promise<void>;
   loadCourses: () => Promise<void>;
   saveCourse: (course: ICourse) => Promise<void>;
@@ -112,7 +112,7 @@ export const ManageCoursePage = ({
   );
 };
 
-export const getCourseBySlug = (courses: Array<ICourse>, slug: string) => {
+export const getCourseBySlug = (courses: ICourse[], slug: string) => {
   return courses.find(course => course.slug === slug) || newCourse;
 };
 

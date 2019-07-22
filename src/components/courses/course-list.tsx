@@ -3,7 +3,7 @@ import { ICourse } from '../../store';
 import { Link } from 'react-router-dom';
 
 interface ICourseListProps {
-  courses: Array<ICourse>;
+  courses: ICourse[];
   onDeleteClick: (event: any) => void;
 }
 
